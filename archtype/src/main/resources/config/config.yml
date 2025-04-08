@@ -1,0 +1,30 @@
+profile: development # OVERRIDE to production
+server:
+  port: 8080
+  grpc-port: 8081
+  max-await-shutdown: 5 # minutes
+  private-key: ${ SERVER_PRIVATE_KEY | -----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDg0mdeyktTxDH5\nhfjeoR+Qhp6NivX0fQUzMgeXxxwYmpefkrYMI+jCTDgI6e4B6knK8epM+BEF3+qj\nUypbdwiVy+aR9KgH/s1vMic87/Jsqx1Vr/4z0a5ayr73oM0ag33RwSEP9ETPp9hp\ny8fQdVcY1dlH3hEk+rdT29YMHqH+JDs9qg/To+Ro+S4GAAA6pN4vSao6SE6Zfqjo\nynghb6OSrlN4+fetczl2AH5w1kxpwKktrV0Oc8XqyFapzppVCwGuFRi7MuE+509y\nD+4iknsKWmTz3OS/UAMQoS0NSEU+vAO4c1DtMjBUl+lAdGu3RUHF8UPYcN8+MaGX\ny3SI+doNAgMBAAECggEAUM3uz1gAGPxkRd3MJCBfGu/3nsH6QsSIkO0DY57xzzoJ\nExaFDfn+F4+TeEiz/cY6fZHTd5SVcboYOFmU2MkAse5WUdFQb4c6SSQKjFFlnX8n\nDPwzbmaHtyQ13QTTkxr9pt02R+iwrr4R/3x5tcfm5Qs/jCAZo2PlbmOOHE8KRDAP\nAYeA91tdp5pHgn1yj2zGMtLNNMqWxncX79KGPV7PkLlWmr+Xg48EYC6PLtLrSNR6\n5Ss8Yonu4MA1YkJukry/uFJkGXjZ9AqqNf1R7d42qYgIC2zeti9x2LAvThEiXG1z\nF0lJh/zFRH1hx0Egpm/amODBZp7dX/kKJkycrxW8lQKBgQDpUKjiBqDAoj0+kJQs\nLotL8SY8ZVDET+4vs+crSO78JRAgex0xUr0LuGYhjkzzOS8EMny714ws4TnyG9J0\nTHlh5DUtOZXjYaiuJFj34xH0RZspemHbwj7ZO/xSilQcM+4a3KfgHSxFLUQFzhaI\nNcBvkaSFAJ6+mHCmySQ/3uVpzwKBgQD2rlgQi5JDQDrwkdpTFjmzolfQNxC8wjPc\nf8wYj165aMLMtdNyc0opGQbd5ZxxTxbennYSR1Ky/nV4eI4OQ07P/8IHInwOc0Mm\nBMiO8abXhZsv6qxzhJHf+tssPM5E6blBIf/AT3MCtofYqJmZegOpzJ/XLwYycMGN\n7RYuT03hYwKBgDZvzmemOj2X3QhK/XdtiKy4YD55OSYErENPC2HLC4+jKicZ8o6+\nikNAy/uKUyPwtKqbCQVe3mLeTgHSQgFGko+niky6AeHiuFOhQWzc+yRuVSyRVGHM\n6ZMP7uhnRAasiyKTV0vwIpMlY5ijJBi1yed+KM+rfF5l/Oq9RYrte8N7AoGBAMHL\nCchFvewzY5pnGxu3FDG5Uj9zYyTHdLK/e3m3+HS0hoUIO0too1RSIwDkR9kEhzTx\nTFTjz2ZrXaH9I6y02A+0H5w3TTqU9qXBkEYsNiSPA/HK7Rv7hBZwHwtL4chlzXIL\n4b4VLIdvGp3tJm5aWtJkvRXyDW5HAuga4BgVmVt9AoGBAM57cRFkmsTlcKLttl11\nnJuF0pof13Lq8qf388LmADj9Aeuc3wPEuvCFitihCvxToEfAuPGQPkuKomM3DTq8\nl7q31x3oUJKH98gwjJ8geIjLmm4AgFwy/tQsaF5oMpczjQGhDaMJ4HbeYaJemJEf\nhyqp4qE5MfIrX0VmbPtgi6Re\n-----END PRIVATE KEY----- }
+  jwt:
+    auth-options:
+      jwtOptions:
+        algorithm: RS256
+        expiresInMinutes: 15
+        noTimestamp: false
+database:
+  schema: public
+  postgresql:
+    host: 127.0.0.1
+    port: 5432
+    database: archtype
+    user: archtype
+    password: 123qwe
+    idle-timeout: 600
+    tcp-keep-alive: true
+    pool:
+      max-size: 8
+      idle-timeout: 600
+      max-lifetime: 0
+    ssl-mode: PREFER # DISABLE, ALLOW, PREFER, REQUIRE, VERIFY_CA, VERIFY_FULL
+    pem-options:
+      certValues: [] # encoded cert to base 64
+commit-id: none
