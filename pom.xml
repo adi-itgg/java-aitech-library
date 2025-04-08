@@ -6,7 +6,7 @@
 
   <groupId>io.aitech</groupId>
   <artifactId>aitech-library</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <modules>
     <module>vertx-http</module>
@@ -269,7 +269,7 @@
           </execution>
         </executions>
       </plugin>
-      
+
       <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
