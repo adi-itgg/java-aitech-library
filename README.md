@@ -6,6 +6,7 @@
 [![CodeQL](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/adi-itgg/java-aitech-library/badge)](https://securityscorecards.dev/viewer/?uri=github.com/adi-itgg/java-aitech-library)
 [![Coverage Status](https://coveralls.io/repos/github/adi-itgg/java-aitech-library/badge.svg?branch=main)](https://coveralls.io/github/adi-itgg/java-aitech-library?branch=main)
+[![Codecov](https://codecov.io/gh/adi-itgg/java-aitech-library/branch/main/graph/badge.svg)](https://codecov.io/gh/adi-itgg/java-aitech-library)
 [![Jitpack](https://jitpack.io/v/adi-itgg/java-aitech-library.svg)](https://jitpack.io/#adi-itgg/java-aitech-library)
 [![Known Vulnerabilities](https://snyk.io/test/github/adi-itgg/java-aitech-library/badge.svg)](https://snyk.io/test/github/adi-itgg/java-aitech-library)
 
