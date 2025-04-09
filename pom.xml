@@ -35,8 +35,8 @@
     <avaje-inject.version>11.2</avaje-inject.version>
     <org-mapstruct.version>1.6.3</org-mapstruct.version>
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
-    <logback.version>1.5.7</logback.version>
-    <slf4j.version>2.0.16</slf4j.version>
+    <logback.version>1.5.18</logback.version>
+    <slf4j.version>2.0.17</slf4j.version>
 
     <maven.compiler.version>3.12.1</maven.compiler.version>
     <maven.resource.version>3.3.1</maven.resource.version>
