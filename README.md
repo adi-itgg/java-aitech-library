@@ -2,6 +2,13 @@
 
 #### focused at performance and ease of use
 
+[![Build Status](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/adi-itgg/java-aitech-library/badge)](https://securityscorecards.dev/viewer/?uri=github.com/adi-itgg/java-aitech-library)
+[![Jitpack](https://jitpack.io/v/adi-itgg/java-aitech-library.svg)](https://jitpack.io/#adi-itgg/java-aitech-library)
+[![Known Vulnerabilities](https://snyk.io/test/github/adi-itgg/java-aitech-library/badge.svg)](https://snyk.io/test/github/adi-itgg/java-aitech-library)
+
+
 ## BOM
 
 This module contains dependencies for all other modules.
