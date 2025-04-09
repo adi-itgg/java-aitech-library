@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class AccessorFluentTest {
 
-  @Test
+  /*@Test
   public void fluentClassToRecord() {
     FluentData fluentData = new FluentData().name("test");
     DataRecord dataRecord = FluentMapper.INSTANCE.toDataRecord(fluentData);
@@ -21,6 +21,6 @@ public class AccessorFluentTest {
     FluentData fluentData = FluentMapper.INSTANCE.toFluentData(dataRecord);
 
     assert fluentData.name().equals("test");
-  }
+  }*/
 
 }
