@@ -126,18 +126,4 @@ public class EncryptionManager {
       .collect(Collectors.joining());
   }
 
-  @SneakyThrows
-  public String md5(String msg) {
-    MessageDigest md = MessageDigest.getInstance("MD5");
-    val inputBytes = msg.getBytes(StandardCharsets.UTF_8);
-    val hashBytes = md.digest(inputBytes);
-    val hexString = new StringBuilder();
-    for (val b : hashBytes) {
-      String hex = Integer.toHexString(0xff & b);
-      if (hex.length() == 1) hexString.append('0');
-      hexString.append(hex);
-    }
-    return hexString.toString();
-  }
-
 }

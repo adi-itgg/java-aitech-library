@@ -17,7 +17,7 @@ database:
     port: 5432
     database: archtype
     user: archtype
-    password: 123qwe
+    password: secret-password
     idle-timeout: 600
     tcp-keep-alive: true
     pool:

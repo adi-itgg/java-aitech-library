@@ -21,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.UUID;
 
 @Slf4j
 @Accessors(fluent = true)
@@ -74,7 +75,7 @@ public abstract class BaseEmbeddedTest {
       .port(2345)
       .database("test")
       .user("unit-test")
-      .password("123qwe");
+      .password(UUID.randomUUID().toString().replace("-", ""));
 
     this.epg = EmbeddedPostgres.builder()
       .setPort(this.databaseOptions.port())
@@ -94,9 +95,9 @@ public abstract class BaseEmbeddedTest {
     });
 
     @Cleanup val dbConnection = this.epg.getPostgresDatabase().getConnection();
-    directQuerySQL(dbConnection, "CREATE DATABASE \"test\";");
-    directQuerySQL(dbConnection, "CREATE ROLE \"unit-test\" WITH LOGIN PASSWORD '123qwe';");
-    directQuerySQL(dbConnection, "GRANT ALL PRIVILEGES ON DATABASE test TO \"unit-test\";");
+    directQuerySQL(dbConnection, "CREATE DATABASE \"" + this.databaseOptions.database() + "\";");
+    directQuerySQL(dbConnection, "CREATE ROLE \"unit-test\" WITH LOGIN PASSWORD '" + this.databaseOptions.password() + " ';");
+    directQuerySQL(dbConnection, "GRANT ALL PRIVILEGES ON DATABASE " + this.databaseOptions.database() + " TO \"" + this.databaseOptions.user() + "\";");
   }
 
   @SneakyThrows
