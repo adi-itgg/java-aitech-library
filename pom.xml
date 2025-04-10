@@ -31,7 +31,7 @@
     <jackson-databind.version>2.18.3</jackson-databind.version>
     <junit.jupiter.version>5.12.1</junit.jupiter.version>
     <jakarta.validation.version>3.1.0</jakarta.validation.version>
-    <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+    <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
     <avaje-inject.version>11.4</avaje-inject.version>
     <org-mapstruct.version>1.6.3</org-mapstruct.version>
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
