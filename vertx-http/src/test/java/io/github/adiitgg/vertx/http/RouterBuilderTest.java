@@ -10,7 +10,6 @@ import io.github.adiitgg.vertx.http.annotation.http.POST;
 import io.github.adiitgg.vertx.http.annotation.middleware.AuthMiddleware;
 import io.github.adiitgg.vertx.http.annotation.middleware.Middleware;
 import io.github.adiitgg.vertx.http.annotation.route.*;
-import io.github.adiitgg.vertx.http.impl.RouterBuilderImpl;
 import io.github.adiitgg.vertx.http.param.ParameterProvider;
 import io.github.adiitgg.vertx.http.util.RouterUtil;
 import io.vertx.core.Future;
@@ -24,9 +23,9 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
-import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.impl.RouteImpl;
 import io.vertx.junit5.VertxExtension;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -50,10 +49,14 @@ public class RouterBuilderTest {
   @Test
   void registerApis(Vertx vertx) {
     val router = Router.router(vertx);
-    router.route().handler(BodyHandler.create());
-    new RouterBuilderImpl()
-      .registerModules(List.of(new ParamProviderFactory()))
-      .append(router, List.of(new HelloWorld(), new MidTest(), new MidUnauthTest(), new MidAfterAuthTest()));
+
+    val instances = List.of(new ParamProviderFactory(), new HelloWorld(), new MidTest(), new MidUnauthTest(), new MidAfterAuthTest());
+
+    RouterBuilder.create(instances)
+      .init(router)
+      .withBodyHandler()
+      .appendRouter();
+
 
     val routes = router.getRoutes().stream()
       .map(route -> (RouteImpl) route)
@@ -62,7 +65,7 @@ public class RouterBuilderTest {
     val sb = RouterUtil.getRouteList(router.getRoutes());
     log.info("Routes:\n" + sb);
 
-    assertEquals(7, routes.size());
+    assertEquals(9, routes.size());
 
     await(vertx.createHttpServer().requestHandler(router).listen(8080));
 
@@ -74,6 +77,14 @@ public class RouterBuilderTest {
       .sendBuffer(Json.encodeToBuffer(request)));
     log.info("Headers: " + resp.headers());
     log.info("Response: " + resp.bodyAsString());
+
+    val resperr = await(webClient.post("/hello-world/error")
+      .putHeader("Content-Type", "application/json")
+      .sendBuffer(Json.encodeToBuffer(request)));
+
+    log.info("Error Headers: " + resperr.headers());
+    log.info("Error Response: " + resperr.bodyAsString());
+
     assertEquals(200, resp.statusCode());
   }
 
@@ -111,6 +122,15 @@ public class RouterBuilderTest {
 
   }
 
+  @Data
+  @Accessors(fluent = true)
+  public static class ErrorRequest {
+
+    @NotBlank
+    private String error;
+
+  }
+
   @Route("/hello-world")
   public static class HelloWorld {
 
@@ -130,6 +150,12 @@ public class RouterBuilderTest {
     @Authenticated
     @Disabled
     public void world() {
+
+    }
+
+    @GET
+    @Authenticated
+    public void error(@RequestBody ErrorRequest errorRequest) {
 
     }
 
