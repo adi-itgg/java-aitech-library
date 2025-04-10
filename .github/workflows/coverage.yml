@@ -23,17 +23,25 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Import GPG key
+      - name: Import GPG key and set trust
         run: |
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
+          mkdir -p ~/.gnupg
+          chmod 700 ~/.gnupg
           echo "use-agent" >> ~/.gnupg/gpg.conf
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+
+          # Import private key
+          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
+
+          # Ambil key ID
           KEYID=$(gpg --list-secret-keys --with-colons | grep '^sec' | cut -d':' -f5)
-          echo "$GPG_PASSPHRASE" | gpg --batch --yes --passphrase-fd 0 --pinentry-mode loopback --edit-key $KEYID trust quit
+
+          # Set trust (auto confirm)
+          echo -e "5\ny\n" | gpg --command-fd 0 --batch --yes --pinentry-mode loopback --edit-key $KEYID trust
+
           echo "KEYID=$KEYID" >> $GITHUB_ENV
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Build and generate JaCoCo report
         run: mvn clean verify
