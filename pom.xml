@@ -37,6 +37,12 @@
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
     <logback.version>1.5.18</logback.version>
     <slf4j.version>2.0.17</slf4j.version>
+    <maven-central-publishing-plugin.version>0.7.0</maven-central-publishing-plugin.version>
+    <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+    <coveralls-maven-plugin.version>4.5.0-M6</coveralls-maven-plugin.version>
+    <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
+    <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
+    <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
 
     <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
     <maven.compiler.version>3.14.0</maven.compiler.version>
@@ -278,7 +284,7 @@
       <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
-        <version>0.7.0</version>
+        <version>${maven-central-publishing-plugin.version}</version>
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
@@ -290,7 +296,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.13</version>
+        <version>${jacoco-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>before-unit-test-execution</id>
@@ -395,7 +401,7 @@
       <plugin>
         <groupId>com.github.hazendaz.maven</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
-        <version>4.5.0-M6</version>
+        <version>${coveralls-maven-plugin.version}</version>
       </plugin>
 
       <plugin>
@@ -409,7 +415,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <version>3.5.3</version>
+        <version>${maven-failsafe-plugin.version}</version>
         <configuration>
           <argLine>${failsafe.jacoco.args}</argLine>
         </configuration>
@@ -426,7 +432,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.7.0</version>
+        <version>${nexus-staging-maven-plugin.version}</version>
         <extensions>true</extensions>
         <configuration>
           <serverId>ossrh</serverId>
@@ -437,7 +443,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
-        <version>3.2.7</version>
+        <version>${maven-gpg-plugin.version}</version>
         <executions>
           <execution>
             <id>sign-artifacts</id>
