@@ -22,7 +22,7 @@ import static io.vertx.sqlclient.Tuple.JSON_NULL;
 
 
 @UtilityClass
-public class RowUtil {
+public final class RowUtil {
 
 
   public static JsonObject toJsonFirstOrNull(Iterable<Row> rows) {
@@ -187,10 +187,8 @@ public class RowUtil {
     return result;
   }
 
-  @SuppressWarnings("unchecked")
-  @SneakyThrows
   public static <T> T mapTo(Row row, Class<T> target) {
-    if (row == null) {
+    if (row == null || row.size() == 0) {
       return null;
     }
 
