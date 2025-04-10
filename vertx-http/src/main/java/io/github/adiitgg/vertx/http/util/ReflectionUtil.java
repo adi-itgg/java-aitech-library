@@ -120,10 +120,4 @@ public final class ReflectionUtil {
     return getAnnotation(method.getModifiers(), method.getAnnotations(), annotation);
   }
 
-  public void fibonacci(int a, int b) {
-    // implement this method
-    // For example:
-    System.out.println("Fibonacci: " + (a + b));
-  }
-
 }
