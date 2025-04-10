@@ -7,8 +7,9 @@
 [![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/adi-itgg/java-aitech-library?label=openssf%20scorecard&style=flat)](https://securityscorecards.dev/viewer/?uri=github.com/adi-itgg/java-aitech-library)
 [![Coverage Status](https://coveralls.io/repos/github/adi-itgg/java-aitech-library/badge.svg?branch=main)](https://coveralls.io/github/adi-itgg/java-aitech-library?branch=main)
 [![Codecov](https://codecov.io/gh/adi-itgg/java-aitech-library/branch/main/graph/badge.svg)](https://codecov.io/gh/adi-itgg/java-aitech-library)
-[![Jitpack](https://jitpack.io/v/adi-itgg/java-aitech-library.svg)](https://jitpack.io/#adi-itgg/java-aitech-library)
 [![Known Vulnerabilities](https://snyk.io/test/github/adi-itgg/java-aitech-library/badge.svg)](https://snyk.io/test/github/adi-itgg/java-aitech-library)
+[![Jitpack](https://jitpack.io/v/adi-itgg/java-aitech-library.svg)](https://jitpack.io/#adi-itgg/java-aitech-library)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.adi-itgg/bom.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.github.adi-itgg/bom)
 
 
 ## BOM
@@ -21,7 +22,7 @@ This module contains dependencies for all other modules.
 <dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>bom</artifactId>
       <version>${library.version}</version>
       <type>pom</type>
@@ -47,7 +48,7 @@ Features:
   <configuration>
     <annotationProcessorPaths>
       <path>
-        <groupId>io.aitech</groupId>
+        <groupId>io.github.adi-itgg</groupId>
         <artifactId>mapstruct-spi-impl</artifactId>
         <version>${library.version}</version>
       </path>
@@ -65,11 +66,11 @@ Features:
 
 ### Usage
 
-Replace `io.vertx.core.Launcher` to `io.aitech.vertx.VTLauncher`
+Replace `io.vertx.core.Launcher` to `io.github.adiitgg.vertx.VTLauncher`
 
 ```xml
 <dependency>
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx</artifactId>
   <version>${library.version}</version>
 </dependency>
@@ -92,7 +93,7 @@ JsonObject config = await(configRetrieverExtended.getConfig());
 
 ```xml
 <dependency>
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-config</artifactId>
   <version>${library.version}</version>
 </dependency>
@@ -112,7 +113,7 @@ Features:
 
 ```xml
 <dependency>
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-config-yml</artifactId>
   <version>${library.version}</version>
 </dependency>
@@ -134,7 +135,7 @@ PgRepository pgRepository = PgRepository.create(pgRepositoryOptions);
 pom.xml
 ```xml
 <dependency>
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-database-orm</artifactId>
   <version>${library.version}</version>
 </dependency>
@@ -179,7 +180,7 @@ public final class TransactionRouter {
 pom.xml
 ```xml
 <dependency>
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-http</artifactId>
   <version>${library.version}</version>
 </dependency>

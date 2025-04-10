@@ -1,1 +1,1 @@
-io.aitech.mapstruct.spi.DefaultWithFluentAccessorNamingStrategy
+io.github.adiitgg.mapstruct.spi.DefaultWithFluentAccessorNamingStrategy

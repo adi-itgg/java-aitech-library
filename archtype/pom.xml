@@ -4,7 +4,7 @@
      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.aitech.arch</groupId>
+  <groupId>io.github.adiitgg.arch</groupId>
   <artifactId>archtype</artifactId>
   <version>1.0.0</version>
 
@@ -39,8 +39,8 @@
     <postgresql.version>42.7.5</postgresql.version>
     <aitech.version>1.0.0</aitech.version>
 
-    <main.verticle>io.aitech.arch.verticle.MainVerticle</main.verticle>
-    <launcher.class>io.aitech.arch.VTLauncher</launcher.class>
+    <main.verticle>io.github.adiitgg.arch.verticle.MainVerticle</main.verticle>
+    <launcher.class>io.github.adiitgg.arch.VTLauncher</launcher.class>
   </properties>
 
   <dependencyManagement>
@@ -53,7 +53,7 @@
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>io.aitech</groupId>
+        <groupId>io.github.adi-itgg</groupId>
         <artifactId>bom</artifactId>
         <version>${aitech.version}</version>
         <type>pom</type>
@@ -87,27 +87,27 @@
 
 
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>mapstruct-spi-impl</artifactId>
       <version>${aitech.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>vertx-config</artifactId>
       <version>${aitech.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>vertx-config-yml</artifactId>
       <version>${aitech.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>vertx-database-orm</artifactId>
       <version>${aitech.version}</version>
     </dependency>
     <dependency>
-      <groupId>io.aitech</groupId>
+      <groupId>io.github.adi-itgg</groupId>
       <artifactId>vertx-http</artifactId>
       <version>${aitech.version}</version>
     </dependency>
@@ -300,7 +300,7 @@
             <!--            </path>-->
             <!-- FOR EXTRA FEATURE FLUENT SETTER & GETTER ACCESSOR -->
             <path>
-              <groupId>io.aitech</groupId>
+              <groupId>io.github.adi-itgg</groupId>
               <artifactId>mapstruct-spi-impl</artifactId>
               <version>${aitech.version}</version>
             </path>

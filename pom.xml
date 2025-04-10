@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.aitech</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>aitech-library</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
@@ -263,7 +263,6 @@
         <executions>
           <execution>
             <id>attach-javadocs</id>
-            <phase>deploy</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -460,6 +459,13 @@
     </license>
   </licenses>
 
+  <developers>
+    <developer>
+      <id>adi-itgg</id>
+      <name>Syahdilla Putra Sholeh</name>
+      <email>adisps9955@gmail.com</email>
+    </developer>
+  </developers>
 
   <scm>
     <url>https://github.com/adi-itgg/java-aitech-library</url>

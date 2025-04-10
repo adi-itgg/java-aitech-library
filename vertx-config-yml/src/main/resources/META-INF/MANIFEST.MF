@@ -1,1 +1,1 @@
-Automatic-Module-Name: io.aitech.vertx.config.yml
+Automatic-Module-Name: io.github.adiitgg.vertx.config.yml
