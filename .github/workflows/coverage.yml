@@ -50,14 +50,6 @@ jobs:
           echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
           echo RELOADAGENT | gpg-connect-agent
 
-      - name: Set environment for GPG
-        run: |
-          export GPG_TTY=$(tty)
-          echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 -u "$KEYID" --sign <<< "test"
-        env:
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
-
-
       - name: Build and generate JaCoCo report
         run: mvn clean verify -B
         env:
