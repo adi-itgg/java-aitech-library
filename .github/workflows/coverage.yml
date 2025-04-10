@@ -21,7 +21,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: maven
 
       - name: Import GPG key and set trust
         run: |
@@ -60,7 +59,10 @@ jobs:
 
 
       - name: Build and generate JaCoCo report
-        run: mvn clean verify
+        run: mvn clean verify -B
+        env:
+          GPG_TTY: $(tty)
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v2.3.6
