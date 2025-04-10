@@ -16,6 +16,25 @@ public class VTLauncherTest {
   @Test
   void deployWithRunCommand(VertxTestContext testContext) {
     new VTLauncher().dispatch(new String[]{"run", MainVerticleTest.class.getName()});
+    checkDeployment(testContext);
+  }
+
+  public static final class MainVerticleTest extends AbstractVerticle {
+
+    private boolean isVirtualThread;
+
+    @Override
+    public void start() {
+      this.isVirtualThread = context.threadingModel() == ThreadingModel.VIRTUAL_THREAD;
+    }
+
+    public boolean isVirtualThread() {
+      return isVirtualThread;
+    }
+
+  }
+
+  void checkDeployment(VertxTestContext testContext) {
     final VertxImpl vertxImpl = (VertxImpl) VTLauncher.getVertxInstance();
     vertxImpl.timer(100, TimeUnit.MILLISECONDS).onComplete(t -> {
       final String deploymentId = vertxImpl.deploymentIDs().stream().findFirst().orElse(null);
@@ -33,19 +52,17 @@ public class VTLauncherTest {
     });
   }
 
-  public static final class MainVerticleTest extends AbstractVerticle {
+  @Test
+  void deployWithRunCommandCustomVertxOptions(VertxTestContext testContext) {
+    System.setProperty("vertx.options", "{\"threadingModel\": \"EVENT_LOOP\"}");
+    new VTLauncher().dispatch(new String[]{"run", MainVerticleTest.class.getName()});
+    checkDeployment(testContext);
+  }
 
-    private boolean isVirtualThread;
-
-    @Override
-    public void start() {
-      this.isVirtualThread = context.threadingModel() == ThreadingModel.VIRTUAL_THREAD;
-    }
-
-    public boolean isVirtualThread() {
-      return isVirtualThread;
-    }
-
+  @Test
+  void deployFromMainLauncher(VertxTestContext testContext) {
+    VTLauncher.main(new String[]{"run", MainVerticleTest.class.getName()});
+    checkDeployment(testContext);
   }
 
 }

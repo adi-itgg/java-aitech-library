@@ -29,7 +29,10 @@ public class VTLauncher extends Launcher {
 
   @Override
   public VertxBuilder createVertxBuilder(JsonObject config) {
-    val envVertxOptions = System.getenv("VERTX_OPTIONS");
+    var envVertxOptions = System.getProperty("vertx.options");
+    if (envVertxOptions == null || envVertxOptions.isBlank()) {
+      envVertxOptions = System.getenv("VERTX_OPTIONS");
+    }
     if (envVertxOptions != null && !envVertxOptions.isBlank()) {
       this.isCustomVertxOptions = true;
       return super.createVertxBuilder(new JsonObject(envVertxOptions));
