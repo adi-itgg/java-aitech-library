@@ -22,47 +22,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Import GPG key and set trust
-        run: |
-          mkdir -p ~/.gnupg
-          chmod 700 ~/.gnupg
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-
-          # Import private key
-          echo "$GPG_PRIVATE_KEY" | gpg --batch --yes --import
-
-          # Ambil key ID
-          KEYID=$(gpg --list-secret-keys --with-colons | grep '^sec' | cut -d':' -f5)
-
-          # Set trust (auto confirm)
-          echo -e "5\ny\n" | gpg --command-fd 0 --batch --yes --pinentry-mode loopback --edit-key $KEYID trust
-
-          echo "KEYID=$KEYID" >> $GITHUB_ENV
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-
-      - name: Set up GPG loopback mode
-        run: |
-          mkdir -p ~/.gnupg
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          echo RELOADAGENT | gpg-connect-agent
-
-      - name: Configure GPG for CI
-        run: |
-          mkdir -p ~/.gnupg
-          echo "use-agent" >> ~/.gnupg/gpg.conf
-          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
-          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
-          echo RELOADAGENT | gpg-connect-agent
-
       - name: Build and generate JaCoCo report
-        run: mvn clean verify -B
-        env:
-          GPG_TTY: $(tty)
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: mvn clean verify -Dgpg.skip=true -B
 
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@v2.3.6
