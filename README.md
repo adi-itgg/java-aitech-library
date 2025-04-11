@@ -4,12 +4,18 @@
 
 [![Build Status](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml)
+
 [![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/adi-itgg/java-aitech-library?label=openssf%20scorecard&style=flat)](https://securityscorecards.dev/viewer/?uri=github.com/adi-itgg/java-aitech-library)
-[![Coverage Status](https://coveralls.io/repos/github/adi-itgg/java-aitech-library/badge.svg?branch=main)](https://coveralls.io/github/adi-itgg/java-aitech-library?branch=main)
-[![Codecov](https://codecov.io/gh/adi-itgg/java-aitech-library/branch/main/graph/badge.svg)](https://codecov.io/gh/adi-itgg/java-aitech-library)
 [![Known Vulnerabilities](https://snyk.io/test/github/adi-itgg/java-aitech-library/badge.svg)](https://snyk.io/test/github/adi-itgg/java-aitech-library)
+
 [![Jitpack](https://jitpack.io/v/adi-itgg/java-aitech-library.svg)](https://jitpack.io/#adi-itgg/java-aitech-library)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.adi-itgg/bom.svg?label=Maven%20Central)](https://search.maven.org/artifact/io.github.adi-itgg/bom)
+
+[![Coverage Status](https://coveralls.io/repos/github/adi-itgg/java-aitech-library/badge.svg?branch=main)](https://coveralls.io/github/adi-itgg/java-aitech-library?branch=main)
+[![Codecov](https://codecov.io/gh/adi-itgg/java-aitech-library/branch/main/graph/badge.svg)](https://codecov.io/gh/adi-itgg/java-aitech-library)
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/adi-itgg/java-aitech-library/blob/main/LICENSE)
+[![Security Policy](https://img.shields.io/badge/security-policy-blue.svg)](https://github.com/adi-itgg/java-aitech-library/blob/main/.github/SECURITY.md)
 
 
 ## BOM
