@@ -13,12 +13,12 @@ _dependencies_ section of your build descriptor:
 [source,xml,subs="+attributes"]
 ----
 <dependency>
-  <groupId>io.vertx</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-config-yml</artifactId>
   <version>${maven.version}</version>
 </dependency>
 <dependency>
-  <groupId>io.vertx</groupId>
+  <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx-config</artifactId>
   <version>${maven.version}</version>
 </dependency>
@@ -28,14 +28,14 @@ _dependencies_ section of your build descriptor:
 
 [source,groovy,subs="+attributes"]
 ----
-compile 'io.vertx:vertx-config:${maven.version}'
-compile 'io.vertx:vertx-config-yml:${maven.version}'
+compile 'io.github.adi-itgg:vertx-config:${maven.version}'
+compile 'io.github.adi-itgg:vertx-config-yml:${maven.version}'
 ----
 
 ==== Configuring the store to use YML
 
 Once added to your classpath or dependencies, you need to configure the
-{@link io.vertx.config.ConfigRetriever} to use this format:
+{@link io.github.adi-itgg.config.ConfigRetriever} to use this format:
 
 [source, $lang]
 ----
