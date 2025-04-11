@@ -4,6 +4,7 @@
 
 [![Build Status](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/10407/badge)](https://www.bestpractices.dev/projects/10407)
 
 [![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/adi-itgg/java-aitech-library?label=openssf%20scorecard&style=flat)](https://securityscorecards.dev/viewer/?uri=github.com/adi-itgg/java-aitech-library)
 [![Known Vulnerabilities](https://snyk.io/test/github/adi-itgg/java-aitech-library/badge.svg)](https://snyk.io/test/github/adi-itgg/java-aitech-library)
