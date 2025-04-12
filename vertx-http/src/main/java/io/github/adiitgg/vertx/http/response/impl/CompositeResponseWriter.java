@@ -30,7 +30,7 @@ public class CompositeResponseWriter implements ResponseWriter {
       context.put(RoutingData.RESPONSE_BODY_BUFFER, buffer);
       return write(context, buffer);
     }
-    Buffer buffer = responseMapper.map(result);
+    Buffer buffer = responseMapper.map(context, result);
     context.put(RoutingData.RESPONSE_BODY_BUFFER, buffer);
     return write(context, buffer);
   }
