@@ -129,7 +129,7 @@ public class ConfigRetrieverExtendedImpl extends ConfigRetrieverImpl implements 
     }
   }
 
-  private String getDefaultConfigPath(String fileSuffix) {
+  String getDefaultConfigPath(String fileSuffix) {
     String value = System.getenv("VERTX_CONFIG_PATH");
     if (value == null || value.trim().isEmpty()) {
       value = System.getProperty("vertx-config-path");
@@ -150,7 +150,7 @@ public class ConfigRetrieverExtendedImpl extends ConfigRetrieverImpl implements 
     return null;
   }
 
-  private String getDefaultDirPath() {
+  String getDefaultDirPath() {
     String value = System.getenv("VERTX_CONFIG_DIR_PATH");
     if (value == null || value.trim().isEmpty()) {
       value = System.getProperty("vertx-config-dir-path");
@@ -166,7 +166,7 @@ public class ConfigRetrieverExtendedImpl extends ConfigRetrieverImpl implements 
     return null;
   }
 
-  private String getDefaultProfile() {
+  String getDefaultProfile() {
     String value = System.getenv("VERTX_PROFILES");
     if (value == null || value.trim().isEmpty()) {
       value = System.getProperty("vertx-profiles");
