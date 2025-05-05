@@ -2,14 +2,12 @@ package io.github.adiitgg.vertx.http.request.impl;
 
 import io.github.adiitgg.vertx.http.model.ParamType;
 import io.github.adiitgg.vertx.http.request.RequestReader;
-import io.github.adiitgg.vertx.http.util.StringUtil;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.ext.web.RoutingContext;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class HeadersRequestReader implements RequestReader {
   public Object read(RoutingContext context, Type type, ParamType paramType) {
     Map<String, String> headers = new HashMap<>();
     for (Map.Entry<String, String> header : context.request().headers()) {
-      headers.put(StringUtil.toCamelCase(header.getKey().toLowerCase(Locale.ROOT), '-'), header.getValue());
+      headers.put(header.getKey(), header.getValue());
     }
     return databindCodec.fromValue(headers, (Class<?>) type);
   }

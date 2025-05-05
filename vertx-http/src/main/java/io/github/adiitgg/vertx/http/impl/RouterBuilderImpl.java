@@ -73,7 +73,7 @@ public class RouterBuilderImpl implements RouterBuilder {
 
   public RouterBuilderImpl() {
     val databindCodec = (DatabindCodec) Json.CODEC;
-    val objectMapper = DatabindCodec.mapper();
+    val objectMapper = DatabindCodec.mapper().findAndRegisterModules();
 
     // RequestReaders
     this.requestReaders.add(new JsonRequestBodyReader(databindCodec));

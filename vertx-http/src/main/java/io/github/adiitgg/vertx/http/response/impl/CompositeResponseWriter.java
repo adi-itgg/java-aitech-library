@@ -5,6 +5,7 @@ import io.github.adiitgg.vertx.http.model.RoutingData;
 import io.github.adiitgg.vertx.http.response.ResponseMapper;
 import io.github.adiitgg.vertx.http.response.ResponseWriter;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +31,7 @@ public class CompositeResponseWriter implements ResponseWriter {
       context.put(RoutingData.RESPONSE_BODY_BUFFER, buffer);
       return write(context, buffer);
     }
-    Buffer buffer = responseMapper.map(context, result);
+    Buffer buffer = responseMapper != null ? responseMapper.map(context, result) : Json.encodeToBuffer(result);
     context.put(RoutingData.RESPONSE_BODY_BUFFER, buffer);
     return write(context, buffer);
   }
