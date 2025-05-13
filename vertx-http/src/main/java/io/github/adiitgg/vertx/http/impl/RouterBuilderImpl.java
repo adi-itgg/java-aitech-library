@@ -133,6 +133,7 @@ public class RouterBuilderImpl implements RouterBuilder {
     this.routeAnnotationProcessors.add(new ProducesRouteAnnotationProcessor());
     this.routeAnnotationProcessors.add(new VirtualHostRouteAnnotationProcessor());
     this.routeAnnotationProcessors.add(new BlockingRouteAnnotationProcessor());
+    this.routeAnnotationProcessors.add(new LogsRouteAnnotationProcessor());
 
     // RequestValidations
     this.requestValidations.add(new JakartaValidationRequest());
@@ -624,6 +625,14 @@ public class RouterBuilderImpl implements RouterBuilder {
   protected void handleContext(RoutingContext context, MethodInvoker methodInvoker, RouteOptions options, ResponseWriter responseWriter) {
     if (options.produces() != null) {
       context.response().putHeader(HttpHeaders.CONTENT_TYPE, String.join(";", options.produces()));
+    }
+
+    if (options.disableRequestLog()) {
+      context.put(RoutingData.REQUEST_NO_LOG, true);
+    }
+
+    if (options.disableResponseLog()) {
+      context.put(RoutingData.RESPONSE_NO_LOG, true);
     }
 
     if (options.noResponseWriter()) {

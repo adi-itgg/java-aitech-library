@@ -35,12 +35,17 @@ public final class HttpResponseLoggingImpl implements HttpResponseLogging {
     }
     builder.append(leftPad(bytesToKilobytes(context.response().bytesWritten()) + "kb", 8)).append(" | ");
     builder.append(leftPad(getClientIpPort(context.request()), 15)).append(" - ");
-    val isReqBodyLoggable = request.method() != HttpMethod.GET && !context.body().isEmpty() && contentType != null && PATTERN_CONTENT_TYPE.matcher(contentType).find();
+    val requestNoLog = context.get(RoutingData.REQUEST_NO_LOG, false);
+    val responseNoLog = context.get(RoutingData.RESPONSE_NO_LOG, false);
+    val isReqBodyLoggable = !requestNoLog && request.method() != HttpMethod.GET && !context.body().isEmpty() && contentType != null && PATTERN_CONTENT_TYPE.matcher(contentType).find();
     builder.append(request.method().name())
       .append(" ").append(request.uri())
-      .append(isReqBodyLoggable ? (" - req=" + context.body().asString().replace("\r", "\\r").replace("\n", "\\n") + ";") : "");
+      .append(isReqBodyLoggable ? (" - req=" + context.body().asString().replace("\r", "\\r").replace("\n", "\\n") + (responseNoLog ? "" : ";")) : "");
 
-    if (data != null && isReqBodyLoggable) {
+    if (!responseNoLog && data != null) {
+      if (!isReqBodyLoggable) {
+        builder.append(" - ");
+      }
       builder.append("resBody=").append(data);
     }
     log.info(builder.toString());

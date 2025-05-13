@@ -30,6 +30,9 @@ public class RouteOptions {
   private boolean blockingOrdered;
   private Map<String, Object> metaData;
 
+  // extra
+  private boolean disableRequestLog;
+  private boolean disableResponseLog;
 
   public Map<String, Object> metaData() {
     if (this.metaData == null) {
