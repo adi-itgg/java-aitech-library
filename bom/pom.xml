@@ -6,11 +6,11 @@
   <parent>
     <groupId>io.github.adi-itgg</groupId>
     <artifactId>aitech-library</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
   </parent>
 
   <artifactId>bom</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 
   <name>AITech Bom</name>
   <packaging>pom</packaging>
