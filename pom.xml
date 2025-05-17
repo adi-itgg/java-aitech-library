@@ -26,7 +26,7 @@
 
     <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
-    <vertx.version>4.5.14</vertx.version>
+    <vertx.version>5.0.0</vertx.version>
     <lombok.version>1.18.38</lombok.version>
     <jackson-databind.version>2.19.0</jackson-databind.version>
     <junit.jupiter.version>5.12.2</junit.jupiter.version>
