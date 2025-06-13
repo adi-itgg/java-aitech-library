@@ -36,7 +36,7 @@
     <mockito.version>5.14.2</mockito.version>
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
     <flyway.version>11.2.0</flyway.version>
-    <postgresql.version>42.7.5</postgresql.version>
+    <postgresql.version>42.7.7</postgresql.version>
     <aitech.version>1.0.0</aitech.version>
 
     <main.verticle>io.github.adiitgg.arch.verticle.MainVerticle</main.verticle>
