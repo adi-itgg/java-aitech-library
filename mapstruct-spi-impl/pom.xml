@@ -9,6 +9,8 @@
     <version>1.0.3</version>
   </parent>
 
+  <name>Mapstruct Fluent SPI Implementation</name>
+
   <artifactId>mapstruct-spi-impl</artifactId>
 
   <dependencies>

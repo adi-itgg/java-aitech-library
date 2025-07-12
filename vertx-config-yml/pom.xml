@@ -9,6 +9,8 @@
     <version>1.0.3</version>
   </parent>
 
+  <name>Vertx Config YAML</name>
+
   <artifactId>vertx-config-yml</artifactId>
 
   <properties>
