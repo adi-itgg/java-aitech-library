@@ -1,13 +1,12 @@
 package io.github.adiitgg.arch.platform.di;
 
+import io.avaje.inject.*;
 import io.github.adiitgg.arch.platform.qualifier.ConnectionDbTest;
+import io.github.adiitgg.arch.platform.qualifier.DbPrimary;
 import io.github.adiitgg.arch.platform.util.TimeUtil;
 import io.github.adiitgg.vertx.config.yml.YmlJsonObject;
 import io.github.adiitgg.vertx.db.orm.PgRepository;
 import io.github.adiitgg.vertx.db.orm.model.PgRepositoryOptions;
-import io.avaje.inject.Bean;
-import io.avaje.inject.External;
-import io.avaje.inject.Factory;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.PemTrustOptions;
@@ -25,6 +24,7 @@ import java.util.Map;
 public final class DIDatabase {
 
   @Bean
+  @Primary
   PgConnectOptions providePgConnectOptions(@External YmlJsonObject config) {
     val pgCfg = config.getJsonObject("database.postgresql");
     val pgConOpt = new PgConnectOptions(pgCfg);
@@ -38,6 +38,7 @@ public final class DIDatabase {
   }
 
   @Bean
+  @Primary
   PgRepository providePgRepository(@External Vertx vertx, @External YmlJsonObject config, PgConnectOptions pgConnectOptions) {
     OffsetDateTime startTime = OffsetDateTime.now();
     val poolCfg = config.getJsonObject("database.postgresql.pool", JsonObject.of());
@@ -65,6 +66,7 @@ public final class DIDatabase {
   }
 
   @Bean
+  @ConnectionDbTest
   PgConnectOptions providePgConnectTestOptions(@External YmlJsonObject config) {
     val pgCfg = config.getJsonObject("database-test.postgresql");
     val pgConOpt = new PgConnectOptions(pgCfg);
@@ -77,11 +79,11 @@ public final class DIDatabase {
     return pgConOpt;
   }
 
-  @ConnectionDbTest
   @Bean
-  PgRepository providePgRepositoryTest(@External Vertx vertx, @External YmlJsonObject config, PgConnectOptions pgConnectOptions) {
+  @ConnectionDbTest
+  PgRepository providePgRepositoryTest(@External Vertx vertx, @External YmlJsonObject config, @ConnectionDbTest PgConnectOptions pgConnectOptions) {
     OffsetDateTime startTime = OffsetDateTime.now();
-    val poolCfg = config.getJsonObject("database.postgresql.pool", JsonObject.of());
+    val poolCfg = config.getJsonObject("database-test.postgresql.pool", JsonObject.of());
     val pgPoolOpt = new PoolOptions(poolCfg);
 
     log.info("initializing database {}... {}:{}", pgConnectOptions.getDatabase(), pgConnectOptions.getHost(), pgConnectOptions.getPort());
@@ -89,7 +91,7 @@ public final class DIDatabase {
 
     val pgRepositoryOptions = PgRepositoryOptions.newBuilder()
       .pool(pool)
-      .maxQueryTookTime(config.getLong("database.postgresql.max-query-took-time", 2_000L))
+      .maxQueryTookTime(config.getLong("database-test.postgresql.max-query-took-time", 2_000L))
       .build();
 
 

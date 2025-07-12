@@ -28,11 +28,11 @@ database:
     pem-options:
       certValues: [] # encoded cert to base 64
 database-test:
-  schema: test
+  schema: public
   postgresql:
     host: 127.0.0.1
-    port: 5432
-    database: archtype
+    port: 5433
+    database: archtype2
     user: archtype
     password: secret-password
     idle-timeout: 600

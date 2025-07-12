@@ -39,6 +39,14 @@ public class HelloWorldHandler {
       return await(repositoryDbTest.currentTime()).toString();
     }
 
+    public String dbPrimaryInfo() {
+      return "Using db primary with info: " + await(helloWorldRepository.dbInfo());
+    }
+
+    public String dbSecondaryInfo() {
+      return "Using db secondary with info: " + await(repositoryDbTest.dbInfo());
+    }
+
 
     public HelloResponse helloPost(HelloRequest request) {
         return helloMapper.toResponse(request);

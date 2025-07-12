@@ -8,4 +8,6 @@ public interface HelloWorldRepository {
 
   Future<OffsetDateTime> currentTime();
 
+  Future<String> dbInfo();
+
 }
