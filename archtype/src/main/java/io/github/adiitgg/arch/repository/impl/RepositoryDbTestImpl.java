@@ -1,9 +1,10 @@
 package io.github.adiitgg.arch.repository.impl;
 
-import io.github.adiitgg.arch.repository.HelloWorldRepository;
+import io.avaje.inject.Component;
+import io.github.adiitgg.arch.platform.qualifier.ConnectionDbTest;
+import io.github.adiitgg.arch.repository.RepositoryDbTest;
 import io.github.adiitgg.vertx.db.orm.PgRepository;
 import io.github.adiitgg.vertx.db.orm.util.RowUtil;
-import io.avaje.inject.Component;
 import io.vertx.core.Future;
 import io.vertx.pgclient.data.Inet;
 import io.vertx.sqlclient.Row;
@@ -12,22 +13,24 @@ import lombok.RequiredArgsConstructor;
 import java.time.OffsetDateTime;
 
 @Component
-@RequiredArgsConstructor
-public class HelloWorldRepositoryImpl implements HelloWorldRepository {
+public class RepositoryDbTestImpl implements RepositoryDbTest {
 
-  private final PgRepository pgRepository;
+  private final PgRepository pgRepositoryDbTest;
+
+  public RepositoryDbTestImpl(@ConnectionDbTest PgRepository pgRepositoryDbTest) {
+    this.pgRepositoryDbTest = pgRepositoryDbTest;
+  }
 
   @Override
   public Future<OffsetDateTime> currentTime() {
-    return pgRepository.query("SELECT now()")
+    return pgRepositoryDbTest.query("SELECT now()")
       .execute()
       .map(rows -> RowUtil.first(rows).getOffsetDateTime(0));
   }
 
-
   @Override
   public Future<String> dbInfo() {
-    return pgRepository
+    return pgRepositoryDbTest
       .query("SELECT inet_client_addr(), inet_client_port(), current_database()")
       .execute()
       .map(rows -> {
@@ -41,5 +44,4 @@ public class HelloWorldRepositoryImpl implements HelloWorldRepository {
         return String.format("IP: %s, Port: %d, DB: %s", ip.getAddress().toString(), port, db);
       });
   }
-
 }
