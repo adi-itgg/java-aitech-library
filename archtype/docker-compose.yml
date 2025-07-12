@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-archtype
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: archtype
+      POSTGRES_USER: archtype
+      POSTGRES_PASSWORD: secret-password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - archtype-net
+
+volumes:
+  postgres_data:
+
+networks:
+  archtype-net:
+    driver: bridge
