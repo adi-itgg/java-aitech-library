@@ -2,7 +2,6 @@ package io.github.adiitgg.arch.platform.di;
 
 import io.avaje.inject.*;
 import io.github.adiitgg.arch.platform.qualifier.ConnectionDbTest;
-import io.github.adiitgg.arch.platform.qualifier.DbPrimary;
 import io.github.adiitgg.arch.platform.util.TimeUtil;
 import io.github.adiitgg.vertx.config.yml.YmlJsonObject;
 import io.github.adiitgg.vertx.db.orm.PgRepository;
