@@ -27,4 +27,21 @@ database:
     ssl-mode: PREFER # DISABLE, ALLOW, PREFER, REQUIRE, VERIFY_CA, VERIFY_FULL
     pem-options:
       certValues: [] # encoded cert to base 64
+database-test:
+  schema: test
+  postgresql:
+    host: 127.0.0.1
+    port: 5432
+    database: archtype
+    user: archtype
+    password: secret-password
+    idle-timeout: 600
+    tcp-keep-alive: true
+    pool:
+      max-size: 8
+      idle-timeout: 600
+      max-lifetime: 0
+    ssl-mode: PREFER # DISABLE, ALLOW, PREFER, REQUIRE, VERIFY_CA, VERIFY_FULL
+    pem-options:
+      certValues: [] # encoded cert to base 64
 commit-id: none

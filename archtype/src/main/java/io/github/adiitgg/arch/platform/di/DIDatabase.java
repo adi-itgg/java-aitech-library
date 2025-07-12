@@ -1,5 +1,6 @@
 package io.github.adiitgg.arch.platform.di;
 
+import io.github.adiitgg.arch.platform.qualifier.ConnectionDbTest;
 import io.github.adiitgg.arch.platform.util.TimeUtil;
 import io.github.adiitgg.vertx.config.yml.YmlJsonObject;
 import io.github.adiitgg.vertx.db.orm.PgRepository;
@@ -38,6 +39,47 @@ public final class DIDatabase {
 
   @Bean
   PgRepository providePgRepository(@External Vertx vertx, @External YmlJsonObject config, PgConnectOptions pgConnectOptions) {
+    OffsetDateTime startTime = OffsetDateTime.now();
+    val poolCfg = config.getJsonObject("database.postgresql.pool", JsonObject.of());
+    val pgPoolOpt = new PoolOptions(poolCfg);
+
+    log.info("initializing database {}... {}:{}", pgConnectOptions.getDatabase(), pgConnectOptions.getHost(), pgConnectOptions.getPort());
+    val pool = Pool.pool(vertx, pgConnectOptions, pgPoolOpt);
+
+    val pgRepositoryOptions = PgRepositoryOptions.newBuilder()
+      .pool(pool)
+      .maxQueryTookTime(config.getLong("database.postgresql.max-query-took-time", 2_000L))
+      .build();
+
+
+    val pgRepository = PgRepository.create(pgRepositoryOptions);
+
+    pgRepository.checkConnection()
+      .onSuccess(con -> log.info("successfully connected to database {}. took {}", pgConnectOptions.getDatabase(), TimeUtil.measureDynamicTookTime(startTime)))
+      .onFailure(e -> {
+        log.error("failed to connect to database {}.", pgConnectOptions.getDatabase(), e);
+        vertx.close();
+      });
+
+    return pgRepository;
+  }
+
+  @Bean
+  PgConnectOptions providePgConnectTestOptions(@External YmlJsonObject config) {
+    val pgCfg = config.getJsonObject("database-test.postgresql");
+    val pgConOpt = new PgConnectOptions(pgCfg);
+
+    val pgTrustCfg = pgCfg.getJsonObject("pem-options");
+    if (pgTrustCfg != null) {
+      pgConOpt.setPemTrustOptions(new PemTrustOptions());
+    }
+    pgConOpt.setProperties(Map.of("search_path", config.getString("database.schema", "public")));
+    return pgConOpt;
+  }
+
+  @ConnectionDbTest
+  @Bean
+  PgRepository providePgRepositoryTest(@External Vertx vertx, @External YmlJsonObject config, PgConnectOptions pgConnectOptions) {
     OffsetDateTime startTime = OffsetDateTime.now();
     val poolCfg = config.getJsonObject("database.postgresql.pool", JsonObject.of());
     val pgPoolOpt = new PoolOptions(poolCfg);

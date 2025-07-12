@@ -36,6 +36,11 @@ public class HelloWorldRouter {
         return helloWorldHandler.dbTime();
     }
 
+    @GET
+    public String dbTimeTest() {
+      return helloWorldHandler.dbTimeTest();
+    }
+
     @POST
     @Consumes("application/json")
     public HelloResponse helloPost(@RequestBody HelloRequest request) {

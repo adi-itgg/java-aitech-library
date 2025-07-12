@@ -6,6 +6,7 @@ import io.github.adiitgg.arch.model.dto.HelloResponse;
 import io.github.adiitgg.arch.model.mapper.HelloMapper;
 import io.github.adiitgg.arch.repository.HelloWorldRepository;
 import io.avaje.inject.Component;
+import io.github.adiitgg.arch.repository.RepositoryDbTest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,7 @@ import static io.vertx.core.Future.await;
 public class HelloWorldHandler {
 
     private final HelloWorldRepository helloWorldRepository;
+    private final RepositoryDbTest repositoryDbTest;
     private final GoogleIntegratorImpl googleIntegrator;
     private final HelloMapper helloMapper;
 
@@ -31,6 +33,10 @@ public class HelloWorldHandler {
 
     public String dbTime() {
         return await(helloWorldRepository.currentTime()).toString();
+    }
+
+    public String dbTimeTest() {
+      return await(repositoryDbTest.currentTime()).toString();
     }
 
 
