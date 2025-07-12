@@ -44,7 +44,6 @@ jobs:
                 </activation>
                 <properties>
                   <gpg.executable>gpg</gpg.executable>
-                  <gpg.passphrase>\${env.GPG_PASSPHRASE}</gpg.passphrase>
                 </properties>
               </profile>
             </profiles>
@@ -53,10 +52,10 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Publish to Maven Central
         run: mvn --batch-mode deploy -P ossrh
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
