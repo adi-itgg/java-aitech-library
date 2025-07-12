@@ -54,7 +54,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
       - name: Publish to Maven Central
-        run: mvn --batch-mode central-publishing:publish -P central-profile
+        run: mvn --batch-mode clean package central-publishing:publish -P central-profile
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
