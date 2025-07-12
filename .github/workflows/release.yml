@@ -18,7 +18,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -31,14 +31,14 @@ jobs:
           <settings>
             <servers>
               <server>
-                <id>ossrh</id>
+                <id>central</id>
                 <username>\${env.MAVEN_USERNAME}</username>
                 <password>\${env.MAVEN_PASSWORD}</password>
               </server>
             </servers>
             <profiles>
               <profile>
-                <id>ossrh</id>
+                <id>central-profile</id>
                 <activation>
                   <activeByDefault>true</activeByDefault>
                 </activation>
@@ -54,7 +54,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
       - name: Publish to Maven Central
-        run: mvn --batch-mode deploy -P ossrh
+        run: mvn --batch-mode central-publishing:publish -P central-profile
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
