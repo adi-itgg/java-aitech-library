@@ -1,6 +1,9 @@
-# AITech Java Library
+# AITech Java Library ⚡
 
-#### focused at performance and ease of use
+**AITech Java Library** is a modern, modular set of Java utilities designed for high-performance backend systems. It focuses on **clean architecture**, **no reflection**, and native integration with **Vert.x**, **MapStruct**, and **Avaje Inject**.
+
+> 🧠 **Zero Reflection**: This library avoids runtime reflection entirely. Instead, it uses `LambdaMetaFactory` for ultra-fast accessors and clean runtime behavior.
+
 
 [![Build Status](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml/badge.svg)](https://github.com/adi-itgg/java-aitech-library/actions/workflows/codeql.yml)
@@ -18,12 +21,11 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/adi-itgg/java-aitech-library/blob/main/LICENSE)
 [![Security Policy](https://img.shields.io/badge/security-policy-blue.svg)](https://github.com/adi-itgg/java-aitech-library/blob/main/.github/SECURITY.md)
 
+## 📦 Modules Overview
 
-## BOM
+### 1. BOM (Bill of Materials)
 
-This module contains dependencies for all other modules.
-
-### Usage:
+Centralized dependency management for all modules.
 
 ```xml
 <dependencyManagement>
@@ -31,7 +33,7 @@ This module contains dependencies for all other modules.
     <dependency>
       <groupId>io.github.adi-itgg</groupId>
       <artifactId>bom</artifactId>
-      <version>${library.version}</version>
+      <version>${aitech.version}</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -39,187 +41,172 @@ This module contains dependencies for all other modules.
 </dependencyManagement>
 ```
 
-## Mapstruct SPI implementation
+---
 
-This module contains Mapstruct SPI implementation.
+### 2. MapStruct SPI Plugin
 
-Features:
-* Fluent setter & getter accessor naming strategy
+Provides a custom SPI to support fluent-style accessors when using MapStruct.
 
-### Usage
+✅ Works seamlessly with:
+
+* Lombok's `@Accessors(fluent = true)`
+* Fast property resolution without reflection
 
 ```xml
 <plugin>
   <artifactId>maven-compiler-plugin</artifactId>
-  <version>${maven-compiler-plugin.version}</version>
   <configuration>
     <annotationProcessorPaths>
       <path>
         <groupId>io.github.adi-itgg</groupId>
         <artifactId>mapstruct-spi-impl</artifactId>
-        <version>${library.version}</version>
+        <version>${aitech.version}</version>
       </path>
     </annotationProcessorPaths>
   </configuration>
 </plugin>
 ```
 
-## Vert.x
+---
 
-This module contains Vert.x extensions.
+### 3. Vert.x Bootstrap (Virtual Threads)
 
-Features:
-* Virtual Thread Launcher
-
-### Usage
-
-Replace `io.vertx.core.Launcher` to `io.github.adiitgg.vertx.VTLauncher`
+Launch your Vert.x application using **Java Virtual Threads** (Java 21+), improving scalability without complex thread management.
 
 ```xml
 <dependency>
   <groupId>io.github.adi-itgg</groupId>
   <artifactId>vertx</artifactId>
-  <version>${library.version}</version>
+  <version>${aitech.version}</version>
 </dependency>
 ```
 
-## Vert.x Config
-
-### Usage
 ```java
-ConfigRetrieverOptions configRetrieverOptions = new ConfigRetrieverOptions()
+public class Main {
+  public static void main(String[] args) {
+    VirtualThreadLauncher.run(MyVerticle.class, args);
+  }
+}
+```
+
+---
+
+### 4. Vert.x Config Loader
+
+Smart configuration loader with support for:
+
+* Multiple profiles (e.g., `config-dev.yml`)
+* YAML format with fallback
+* Environment key auto-binding
+
+```java
+ConfigRetrieverOptions options = new ConfigRetrieverOptions()
   .setIncludeDefaultStores(false)
-  .setScanPeriod(-1L);
-ConfigRetrieverExtended configRetrieverExtended = ConfigRetrieverExtended.create(vertx, configRetrieverOptions)
-  .args(args.toArray(new String[0])) // --profiles=development or -p=dev
+  .setScanPeriod(-1);
+
+ConfigRetrieverExtended retriever = ConfigRetrieverExtended.create(vertx, options)
+  .args(args)
   .format("yml")
   .build();
 
-JsonObject config = await(configRetrieverExtended.getConfig());
+JsonObject config = await(retriever.getConfig());
 ```
 
-```xml
-<dependency>
-  <groupId>io.github.adi-itgg</groupId>
-  <artifactId>vertx-config</artifactId>
-  <version>${library.version}</version>
-</dependency>
-```
+---
 
+### 5. Vert.x ORM (PostgreSQL)
 
-## Vert.x Config Yaml
+Lightweight, annotation-based ORM for Vert.x with **zero reflection**.
 
-this module contains Vert.x Config Yaml(yml) extension.
-
-Features:
-* Multiple Profiles (ex: config.yml (default), config-development.yml (override the default config))
-* Customize Environment Key With Default Value `${ APP_PROFILE | development }`
-* Customize Configuration for Yaml LoaderOptions
-* Set or Get value easily with `YmlJsonObject`. ex: `config.getString("postgres.host")`
-
-### Usage
-
-```xml
-<dependency>
-  <groupId>io.github.adi-itgg</groupId>
-  <artifactId>vertx-config-yml</artifactId>
-  <version>${library.version}</version>
-</dependency>
-```
-
-## Vert.x Database ORM
-
-Initialization repository
-```java
-Pool pool = Pool.pool(vertx, pgConnectOptions, pgPoolOpt);
-
-PgRepositoryOptions pgRepositoryOptions = PgRepositoryOptions.newBuilder()
-  .pool(pool)
-  .build();
-
-PgRepository pgRepository = PgRepository.create(pgRepositoryOptions);
-```
-
-### Usage:
+Example entity:
 
 ```java
 @Data
 @Accessors(fluent = true)
-@Entity(name = "t_bank_account_cache")
-public final class BankAccountCacheEntity {
-
-  @Id(autoGenerated = false)
-  private String id;
-  private String bankCode;
-  private String accountName;
-  private String accountCity;
-  @Column(updatable = false)
-  private String accountNo;
-  private String accountAddress;
-  private @CreatedAt OffsetDateTime createdAt;
-  private @UpdatedAt OffsetDateTime updatedAt;
-  private OffsetDateTime expiredDate;
-
-}
-
-public Future<BankAccountCacheEntity> insert(BankAccountCacheEntity bankAccountCacheEntity) {
-  return pgRepository.insert(bankAccountEntity);
+@Entity(name = "t_user")
+public final class UserEntity {
+  @Id private String id;
+  @CreatedAt private OffsetDateTime createdAt;
+  @UpdatedAt private OffsetDateTime updatedAt;
 }
 ```
 
-pom.xml
-```xml
-<dependency>
-  <groupId>io.github.adi-itgg</groupId>
-  <artifactId>vertx-database-orm</artifactId>
-  <version>${library.version}</version>
-</dependency>
-```
-
-## Vert.x Http
-
-Initialization router
-```java
-RouterBuilder routeBuilder = RouterBuilder.create(routers)
-      .setRequestValidations(List.of(jktValidator))
-      .exceptionHandler(exceptionHandler)
-      .responseMapper(responseMapper)
-      .init(router)
-      .withBodyHandler()
-      .appendRouter();
-```
-
-### Usage
+Insert example:
 
 ```java
-@Route("/transaction")
-@Authenticated
-@Consumes("application/json")
+Future<UserEntity> result = pgRepository.insert(userEntity);
+```
+
+Features:
+
+* SQL-first approach
+* No proxies or reflection
+* Annotation-based (via compile-time processors)
+
+---
+
+### 6. Vert.x HTTP Handler
+
+A declarative HTTP routing system with built-in:
+
+* Body parsing
+* Input validation
+* Response mapping
+* Exception handling
+
+```java
+RouterBuilder.create(routers)
+  .setRequestValidations(List.of(...))
+  .exceptionHandler(new GlobalExceptionHandler())
+  .responseMapper(new DefaultResponseMapper())
+  .init(router)
+  .withBodyHandler()
+  .appendRouter();
+```
+
+Example route definition:
+
+```java
+@Route("/api/user")
 @RequiredArgsConstructor
-public final class TransactionRouter {
+public final class UserRouter {
+  private final UserHandler handler;
 
-  private final TransactionHandler transactionHandler;
-
-  @POST
-  public TransactionInquiryResponse inquiry(@ContextData(Constant.ContextKeys.CLIENT_CONFIG_ENTITY) ClientConfigEntity clientConfigEntity, @RequestBody TransactionInquiryRequest request) {
-    return transactionHandler.inquiry(clientConfigEntity, request);
-  }
-
-  @POST
-  public TransactionRemitResponse remit(@RequestBody TransactionRemitRequest request) {
-    return transactionHandler.remit(request);
+  @GET
+  public UserResponse get(@QueryParam String id) {
+    return handler.findById(id);
   }
 }
 ```
 
-pom.xml
-```xml
-<dependency>
-  <groupId>io.github.adi-itgg</groupId>
-  <artifactId>vertx-http</artifactId>
-  <version>${library.version}</version>
-</dependency>
-```
+---
+
+## ✨ Key Advantages
+
+* ✅ **Zero reflection** – powered by `LambdaMetaFactory` for optimal runtime performance
+* ⚡ Built-in support for Virtual Threads
+* 🧩 Clean separation between config, handler, model, and persistence
+* 📦 Compatible with modern toolchains: Lombok, MapStruct, Avaje Inject
+
+---
+
+## 📚 Getting Started
+
+1. Import the BOM into your `pom.xml`
+2. Choose modules you need: `vertx`, `orm`, `http`, `mapstruct-spi`, etc.
+3. Set up your config, handlers, and entities using examples above.
+
+---
+
+## 🧪 Requirements
+
+* Java 21+
+* Vert.x 4.5+
+* Maven 3.9+
+
+---
+
+> Fast, clean, reflection-free Java development.
 
 
 ### Use with awesome java libraries
