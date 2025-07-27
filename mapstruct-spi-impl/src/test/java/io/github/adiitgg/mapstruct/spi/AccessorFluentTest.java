@@ -20,22 +20,6 @@ import static org.mockito.Mockito.when;
 
 final class AccessorFluentTest {
 
-  /*@Test
-  public void fluentClassToRecord() {
-    FluentData fluentData = new FluentData().name("test");
-    DataRecord dataRecord = FluentMapper.INSTANCE.toDataRecord(fluentData);
-
-    assert dataRecord.name().equals("test");
-  }
-
-  @Test
-  public void recordToFluentClass() {
-    DataRecord dataRecord = new DataRecord("test");
-    FluentData fluentData = FluentMapper.INSTANCE.toFluentData(dataRecord);
-
-    assert fluentData.name().equals("test");
-  }*/
-
   @Test
   void getter() {
     val strategy = new DefaultWithFluentAccessorNamingStrategy();
@@ -57,6 +41,82 @@ final class AccessorFluentTest {
 
 
     assertTrue(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
+    assertEquals("name", strategy.getPropertyName(executableElement));
+  }
+
+  @Test
+  void getterIs() {
+    val strategy = new DefaultWithFluentAccessorNamingStrategy();
+    val executableElement = mock(ExecutableElement.class);
+
+    val name = mock(Name.class);
+    when(name.toString()).thenReturn("isName");
+
+    val typeMirror = mock(TypeMirror.class);
+    when(typeMirror.getKind()).thenReturn(TypeKind.BOOLEAN);
+
+    val element = mock(Element.class);
+    when(element.asType()).thenReturn(typeMirror);
+
+    when(executableElement.getParameters()).thenReturn(Collections.emptyList());
+    when(executableElement.getSimpleName()).thenReturn(name);
+    when(executableElement.getReturnType()).thenReturn(typeMirror);
+    when(executableElement.getEnclosingElement()).thenReturn(element);
+
+
+    assertTrue(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
+    assertEquals("name", strategy.getPropertyName(executableElement));
+  }
+
+  @Test
+  void getterNotCorrectIs() {
+    val strategy = new DefaultWithFluentAccessorNamingStrategy();
+    val executableElement = mock(ExecutableElement.class);
+
+    val name = mock(Name.class);
+    when(name.toString()).thenReturn("isName");
+
+    val typeMirror = mock(TypeMirror.class);
+    when(typeMirror.getKind()).thenReturn(TypeKind.TYPEVAR);
+
+    val element = mock(Element.class);
+    when(element.asType()).thenReturn(typeMirror);
+
+    when(executableElement.getParameters()).thenReturn(Collections.emptyList());
+    when(executableElement.getSimpleName()).thenReturn(name);
+    when(executableElement.getReturnType()).thenReturn(typeMirror);
+    when(executableElement.getEnclosingElement()).thenReturn(element);
+
+
+    assertFalse(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
+    assertEquals("name", strategy.getPropertyName(executableElement));
+  }
+
+  @Test
+  void getterNotCorrect() {
+    val strategy = new DefaultWithFluentAccessorNamingStrategy();
+    val executableElement = mock(ExecutableElement.class);
+
+    val name = mock(Name.class);
+    when(name.toString()).thenReturn("getName");
+
+    val typeMirror = mock(TypeMirror.class);
+    when(typeMirror.getKind()).thenReturn(TypeKind.VOID);
+
+    val element = mock(Element.class);
+    when(element.asType()).thenReturn(typeMirror);
+
+    when(executableElement.getParameters()).thenReturn(List.of());
+    when(executableElement.getSimpleName()).thenReturn(name);
+    when(executableElement.getReturnType()).thenReturn(typeMirror);
+    when(executableElement.getEnclosingElement()).thenReturn(element);
+
+
+    assertFalse(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
@@ -90,6 +150,7 @@ final class AccessorFluentTest {
 
 
     assertTrue(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
@@ -123,6 +184,7 @@ final class AccessorFluentTest {
 
 
     assertTrue(strategy.isGetterMethod(executableElement));
+    assertFalse(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
@@ -157,6 +219,7 @@ final class AccessorFluentTest {
 
 
     assertFalse(strategy.isGetterMethod(executableElement));
+    assertTrue(strategy.isSetterMethod(executableElement));
     assertEquals("setName", strategy.getPropertyName(executableElement));
   }
 
@@ -195,6 +258,7 @@ final class AccessorFluentTest {
 
 
     assertFalse(strategy.isGetterMethod(executableElement));
+    assertTrue(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
@@ -237,6 +301,7 @@ final class AccessorFluentTest {
 
 
     assertFalse(strategy.isGetterMethod(executableElement));
+    assertTrue(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
@@ -278,6 +343,7 @@ final class AccessorFluentTest {
 
 
     assertFalse(strategy.isGetterMethod(executableElement));
+    assertTrue(strategy.isSetterMethod(executableElement));
     assertEquals("name", strategy.getPropertyName(executableElement));
   }
 
