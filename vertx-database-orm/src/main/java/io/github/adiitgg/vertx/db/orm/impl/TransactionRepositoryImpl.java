@@ -2,6 +2,7 @@ package io.github.adiitgg.vertx.db.orm.impl;
 
 
 import io.github.adiitgg.vertx.db.orm.DaoManager;
+import io.github.adiitgg.vertx.db.orm.PreparedQueryFilter;
 import io.github.adiitgg.vertx.db.orm.TransactionRepository;
 import io.github.adiitgg.vertx.db.orm.util.DiffUtil;
 import io.github.adiitgg.vertx.db.orm.model.DAOQueryType;
@@ -34,13 +35,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
   private final SqlConnection sqlConnection;
   private final Transaction transaction;
   private final DaoManager daoManager;
+  private final List<PreparedQueryFilter> preparedQueryFilters;
   private boolean commited;
 
 
   private <T> Future<Row> executePreparedQuery(T entity, DAOQueryType queryType, boolean returning) {
     final PreparedQuery preparedQuery = daoManager.getPreparedQueryEntity(entity, queryType, returning);
     final long startTime = System.currentTimeMillis();
-    return sqlConnection.preparedQuery(preparedQuery.sql())
+    return preparedQuery(preparedQuery.sql())
       .execute(preparedQuery.tuple())
       .onComplete(logQuery(log, options.maxQueryTookTime(), startTime, preparedQuery.sql()))
       .map(RowUtil::firstOrNull);
@@ -49,7 +51,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
   private <T> Future<T> executeAndUpdatePreparedQuery(T entity, DAOQueryType queryType, boolean updateCurrentEntity) {
     final PreparedQuery preparedQuery = daoManager.getPreparedQueryEntity(entity, queryType, updateCurrentEntity);
     final long startTime = System.currentTimeMillis();
-    return sqlConnection.preparedQuery(preparedQuery.sql())
+    return preparedQuery(preparedQuery.sql())
       .execute(preparedQuery.tuple())
       .onComplete(logQuery(log, options.maxQueryTookTime(), startTime, preparedQuery.sql()))
       .map(rows -> {
@@ -74,7 +76,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
       tuples.add(pQuery.tuple());
     }
     final long startTime = System.currentTimeMillis();
-    return sqlConnection.preparedQuery(preparedQuery.sql())
+    return preparedQuery(preparedQuery.sql())
       .executeBatch(tuples)
       .onComplete(logQuery(log, options.maxQueryTookTime(), startTime, preparedQuery.sql()))
       .map(RowUtil::firstOrNull);
@@ -154,11 +156,21 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
   @Override
   public io.vertx.sqlclient.PreparedQuery<RowSet<Row>> preparedQuery(String sql) {
+    if (preparedQueryFilters != null) {
+      for (PreparedQueryFilter filter : preparedQueryFilters) {
+        sql = filter.filter(sql, null);
+      }
+    }
     return sqlConnection.preparedQuery(sql);
   }
 
   @Override
   public io.vertx.sqlclient.PreparedQuery<RowSet<Row>> preparedQuery(String sql, PrepareOptions options) {
+    if (preparedQueryFilters != null) {
+      for (PreparedQueryFilter filter : preparedQueryFilters) {
+        sql = filter.filter(sql, options);
+      }
+    }
     return sqlConnection.preparedQuery(sql, options);
   }
 

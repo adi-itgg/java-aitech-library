@@ -111,8 +111,13 @@ public interface PgRepository extends Pool, SqlClientInternal, Repository {
     Pool delegate = (Pool) delegateField.get(pool);
 
     DaoManager daoManager = DaoManager.getInstance();
+    PgManager pgManager = PgManager.getInstance();
 
-    return new PgRepositoryImpl(pgRepositoryOptions, vertx, closeFuture, delegate, daoManager);
+    if (pgRepositoryOptions.enableModule()) {
+      pgManager.findAndLoadModules(null);
+    }
+
+    return new PgRepositoryImpl(pgRepositoryOptions, vertx, closeFuture, delegate, daoManager, pgManager);
   }
 
   Future<Void> checkConnection();

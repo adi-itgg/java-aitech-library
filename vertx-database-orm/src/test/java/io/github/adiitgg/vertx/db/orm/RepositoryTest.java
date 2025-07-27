@@ -42,6 +42,7 @@ public class RepositoryTest extends BaseEmbeddedTest {
     val options = PgRepositoryOptions.newBuilder()
       .pool(Pool.pool(vertx, pgConnectOptions, new PoolOptions().setMaxSize(4)))
       .debug(true)
+      .enableModule(true)
       .build();
     this.pgRepository = PgRepository.create(options);
     setupStructure();
@@ -52,7 +53,8 @@ public class RepositoryTest extends BaseEmbeddedTest {
       CREATE TABLE m_user (
         id serial PRIMARY KEY,
         value varchar(255),
-        updated_at timestamptz
+        updated_at timestamptz,
+        deleted_at timestamptz
       );
       """;
     await(pgRepository.preparedQuery(sql).execute());
@@ -65,11 +67,24 @@ public class RepositoryTest extends BaseEmbeddedTest {
     private Integer id;
     private String value;
     private @UpdatedAt OffsetDateTime updatedAt;
+    private OffsetDateTime deletedAt;
 
-    public SaveTestEntity(int id, String value) {
+    public SaveTestEntity(int id, String value, OffsetDateTime updatedAt, OffsetDateTime deletedAt) {
       this.id = id;
       this.value = value;
+      this.updatedAt = updatedAt;
+      this.deletedAt = deletedAt;
     }
+
+    public SaveTestEntity(int id, String value, OffsetDateTime deletedAt) {
+      this(id, value, null, deletedAt);
+    }
+
+    public SaveTestEntity(int id, String value) {
+      this(id, value, null, null);
+    }
+
+
 
   }
 
@@ -81,6 +96,15 @@ public class RepositoryTest extends BaseEmbeddedTest {
     val rows = await(pgRepository.preparedQuery("SELECT id FROM m_user WHERE value = $1").execute(Tuple.of(entity.value)));
     assertNull(returnRow);
     assertEquals(1, rows.size());
+  }
+
+  @Test
+  void insertDeletedUser_success() {
+    val entity = new SaveTestEntity(random.nextInt(100, 1000), "user_deleted", OffsetDateTime.now());
+    val returnRow = await(pgRepository.insert(entity));
+    val rows = await(pgRepository.preparedQuery("SELECT id, deleted_at FROM m_user WHERE value = $1").execute(Tuple.of(entity.value)));
+    assertNull(returnRow);
+    assertEquals(0, rows.size());
   }
 
   @Test
@@ -182,6 +206,11 @@ public class RepositoryTest extends BaseEmbeddedTest {
     val row = await(pgRepository.preparedQuery("SELECT value FROM m_user WHERE id = $1").execute(Tuple.of(entity.id)).map(RowUtil::firstOrNull));
     assertNotNull(row);
     assertEquals(entity.value, row.getValue(0));
+  }
+
+  @Test
+  void filterModuleTest() {
+
   }
 
 }
