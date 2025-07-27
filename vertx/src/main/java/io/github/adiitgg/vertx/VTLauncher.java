@@ -3,7 +3,6 @@ package io.github.adiitgg.vertx;
 import io.vertx.core.*;
 import io.vertx.core.impl.VertxBuilder;
 import io.vertx.core.json.JsonObject;
-import lombok.val;
 
 import java.util.concurrent.TimeUnit;
 

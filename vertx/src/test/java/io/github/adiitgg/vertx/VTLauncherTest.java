@@ -1,14 +1,19 @@
 package io.github.adiitgg.vertx;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.ThreadingModel;
 import io.vertx.core.impl.VertxImpl;
+import io.vertx.core.json.JsonObject;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.junit5.VertxTestContext;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(VertxExtension.class)
 public class VTLauncherTest {
@@ -63,6 +68,38 @@ public class VTLauncherTest {
   void deployFromMainLauncher(VertxTestContext testContext) {
     VTLauncher.main(new String[]{"run", MainVerticleTest.class.getName()});
     checkDeployment(testContext);
+  }
+
+  @Test
+  void shouldSetVirtualThreadModelForEventLoop() {
+    DeploymentOptions options = new DeploymentOptions()
+      .setThreadingModel(ThreadingModel.EVENT_LOOP);
+
+    VTLauncher launcher = new VTLauncher();
+    launcher.beforeDeployingVerticle(options);
+
+    assertEquals(ThreadingModel.VIRTUAL_THREAD, options.getThreadingModel());
+  }
+
+  @Test
+  void shouldNotChangeNonEventLoopThreadingModel() {
+    DeploymentOptions options = new DeploymentOptions()
+      .setThreadingModel(ThreadingModel.WORKER);
+
+    VTLauncher launcher = new VTLauncher();
+    launcher.beforeDeployingVerticle(options);
+
+    assertEquals(ThreadingModel.WORKER, options.getThreadingModel());
+  }
+
+  @Test
+  void shouldCreateVertxBuilderWithBlankPropertyOptions() {
+    System.setProperty("vertx.options", "");
+
+    VTLauncher launcher = new VTLauncher();
+    var builder = launcher.createVertxBuilder(new JsonObject());
+
+    assertNotNull(builder);
   }
 
 }
