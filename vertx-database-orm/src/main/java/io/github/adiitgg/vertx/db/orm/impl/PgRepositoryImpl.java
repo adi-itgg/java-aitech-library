@@ -1,8 +1,6 @@
 package io.github.adiitgg.vertx.db.orm.impl;
 
-import io.github.adiitgg.vertx.db.orm.DaoManager;
-import io.github.adiitgg.vertx.db.orm.PgRepository;
-import io.github.adiitgg.vertx.db.orm.TransactionRepository;
+import io.github.adiitgg.vertx.db.orm.*;
 import io.github.adiitgg.vertx.db.orm.util.DiffUtil;
 import io.github.adiitgg.vertx.db.orm.model.DAOQueryType;
 import io.github.adiitgg.vertx.db.orm.model.PgRepositoryOptions;
@@ -22,6 +20,7 @@ import lombok.val;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -34,10 +33,20 @@ public class PgRepositoryImpl extends PoolBase<PoolImpl> implements PgRepository
   private final PgRepositoryOptions pgRepositoryOptions;
   private final DaoManager daoManager;
 
-  public PgRepositoryImpl(PgRepositoryOptions pgRepositoryOptions, VertxInternal vertx, CloseFuture closeFuture, Pool delegate, DaoManager daoManager) {
+  private List<PreparedQueryFilter> preparedQueryFilters;
+
+  public PgRepositoryImpl(PgRepositoryOptions pgRepositoryOptions, VertxInternal vertx, CloseFuture closeFuture, Pool delegate, DaoManager daoManager, PgManager pgManager) {
     super(vertx, closeFuture, delegate);
     this.pgRepositoryOptions = pgRepositoryOptions;
     this.daoManager = daoManager;
+
+    this.preparedQueryFilters = pgManager.getLoadedModules().stream()
+      .map(module -> module instanceof PreparedQueryFilter m ? m : null)
+      .filter(Objects::nonNull)
+      .toList();
+    if (this.preparedQueryFilters.isEmpty()) {
+      this.preparedQueryFilters = null;
+    }
   }
 
 
@@ -185,7 +194,7 @@ public class PgRepositoryImpl extends PoolBase<PoolImpl> implements PgRepository
       .begin()
       .flatMap(tx -> loadConfigTransaction(options, conn).map(u -> tx))
       .flatMap(tx -> {
-        var repo = new TransactionRepositoryImpl(options, conn, tx, daoManager);
+        var repo = new TransactionRepositoryImpl(options, conn, tx, daoManager, preparedQueryFilters);
         try {
           return block.apply(repo).compose(res -> repo.commitTransaction()
             .flatMap(v -> Future.succeededFuture(res)), err -> {
@@ -201,4 +210,25 @@ public class PgRepositoryImpl extends PoolBase<PoolImpl> implements PgRepository
       })
       .onComplete(ar -> conn.close()));
   }
+
+  @Override
+  public io.vertx.sqlclient.PreparedQuery<RowSet<Row>> preparedQuery(String sql) {
+    if (pgRepositoryOptions.enableModule() && preparedQueryFilters != null) {
+      for (PreparedQueryFilter filter : preparedQueryFilters) {
+        sql = filter.filter(sql, null);
+      }
+    }
+    return super.preparedQuery(sql);
+  }
+
+  @Override
+  public io.vertx.sqlclient.PreparedQuery<RowSet<Row>> preparedQuery(String sql, PrepareOptions options) {
+    if (pgRepositoryOptions.enableModule() && preparedQueryFilters != null) {
+      for (PreparedQueryFilter filter : preparedQueryFilters) {
+        sql = filter.filter(sql, options);
+      }
+    }
+    return super.preparedQuery(sql, options);
+  }
+
 }

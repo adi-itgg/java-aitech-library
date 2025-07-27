@@ -19,6 +19,7 @@ public class PgRepositoryOptions {
   @Builder.Default
   private Long maxQueryTookTime = DEFAULT_MAX_QUERY_TOOK_TIME;
   private boolean debug;
+  private boolean enableModule;
 
   public PgRepositoryOptions(Pool pool) {
     this.pool = pool;

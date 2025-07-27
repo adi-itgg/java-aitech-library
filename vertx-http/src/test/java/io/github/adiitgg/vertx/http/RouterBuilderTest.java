@@ -7,15 +7,18 @@ import io.github.adiitgg.vertx.http.annotation.RequestBody;
 import io.github.adiitgg.vertx.http.annotation.RequestHeaders;
 import io.github.adiitgg.vertx.http.annotation.http.GET;
 import io.github.adiitgg.vertx.http.annotation.http.POST;
+import io.github.adiitgg.vertx.http.annotation.http.PUT;
 import io.github.adiitgg.vertx.http.annotation.middleware.AuthMiddleware;
 import io.github.adiitgg.vertx.http.annotation.middleware.Middleware;
 import io.github.adiitgg.vertx.http.annotation.route.*;
 import io.github.adiitgg.vertx.http.param.ParameterProvider;
 import io.github.adiitgg.vertx.http.util.RouterUtil;
+import io.vertx.core.Context;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.impl.VertxImpl;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.Json;
@@ -65,7 +68,7 @@ public class RouterBuilderTest {
     val sb = RouterUtil.getRouteList(router.getRoutes());
     log.info("Routes:\n" + sb);
 
-    assertEquals(9, routes.size());
+    assertEquals(10, routes.size());
 
     await(vertx.createHttpServer().requestHandler(router).listen(8080));
 
@@ -151,6 +154,17 @@ public class RouterBuilderTest {
     @Disabled
     public void world() {
 
+    }
+
+    @PUT
+    @Authenticated
+    public void world(RoutingContext ctx) {
+      VertxImpl vertx = (VertxImpl) ctx.vertx();
+      Context vtContext = vertx.createVirtualThreadContext();
+      vtContext.runOnContext(v -> {
+        log.info("Hello World");
+        // TODO : do something (heavy task)
+      });
     }
 
     @GET
