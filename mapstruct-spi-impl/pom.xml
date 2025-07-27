@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.adi-itgg</groupId>
     <artifactId>aitech-library</artifactId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
   </parent>
 
   <name>Mapstruct Fluent SPI Implementation</name>
