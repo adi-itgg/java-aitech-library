@@ -32,7 +32,7 @@
     <junit.jupiter.version>5.13.4</junit.jupiter.version>
     <jakarta.validation.version>3.1.1</jakarta.validation.version>
     <hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
-    <avaje-inject.version>11.5</avaje-inject.version>
+    <avaje-inject.version>11.6</avaje-inject.version>
     <org-mapstruct.version>1.6.3</org-mapstruct.version>
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
     <logback.version>1.5.18</logback.version>
