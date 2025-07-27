@@ -68,7 +68,7 @@ public class RouterBuilderTest {
     val sb = RouterUtil.getRouteList(router.getRoutes());
     log.info("Routes:\n" + sb);
 
-    assertEquals(9, routes.size());
+    assertEquals(10, routes.size());
 
     await(vertx.createHttpServer().requestHandler(router).listen(8080));
 
