@@ -5,6 +5,7 @@ import io.github.adiitgg.vertx.db.orm.annotation.Id;
 import io.github.adiitgg.vertx.db.orm.annotation.UpdatedAt;
 import io.github.adiitgg.vertx.db.orm.model.PgRepositoryOptions;
 import io.github.adiitgg.vertx.db.orm.util.RowUtil;
+import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.junit5.VertxExtension;
 import io.vertx.pgclient.PgConnectOptions;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,6 +136,19 @@ public class RepositoryTest extends BaseEmbeddedTest {
   }
 
   @Test
+  void insertBatch_success() {
+    val entities = new SaveTestEntity[] {
+      new SaveTestEntity(random.nextInt(100, 1000), "insertBatch1"),
+      new SaveTestEntity(random.nextInt(100, 1000), "insertBatch2"),
+      new SaveTestEntity(random.nextInt(100, 1000), "insertBatch3")
+    };
+    await(pgRepository.insertBatch(Arrays.stream(entities).toList()));
+    val rows = await(pgRepository.preparedQuery("SELECT id, value FROM m_user WHERE value IN ($1, $2, $3)")
+      .execute(Tuple.of(entities[0].value, entities[1].value, entities[2].value)));
+    assertEquals(3, rows.size());
+  }
+
+  @Test
   void update_success() {
     val entity = new SaveTestEntity(random.nextInt(100, 1000), "update");
 
@@ -208,9 +223,16 @@ public class RepositoryTest extends BaseEmbeddedTest {
     assertEquals(entity.value, row.getValue(0));
   }
 
+
   @Test
-  void filterModuleTest() {
-
+  void transactionRollbackUpdate_failed() {
+    val entity = new SaveTestEntity(random.nextInt(100, 1000), "transaction");
+    await(pgRepository.insert(entity));
+    await(pgRepository.transaction(tx -> {
+      entity.value = "transaction-rollback-update";
+      return tx.update(entity).compose(v -> Future.failedFuture(new RuntimeException("failed")));
+    }).recover(err -> Future.succeededFuture(null)));
+    val user = await(pgRepository.preparedQuery("SELECT id FROM m_user WHERE value = $1").execute(Tuple.of("transaction")).map(RowUtil::firstOrNull));
+    assertNotNull(user);
   }
-
 }
