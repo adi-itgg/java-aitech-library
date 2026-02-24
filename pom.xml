@@ -27,14 +27,14 @@
     <versions-maven-plugin.version>2.18.0</versions-maven-plugin.version>
 
     <vertx.version>4.5.25</vertx.version>
-    <lombok.version>1.18.38</lombok.version>
-    <jackson-databind.version>2.19.2</jackson-databind.version>
+    <lombok.version>1.18.42</lombok.version>
+    <jackson-databind.version>2.21.1</jackson-databind.version>
     <junit.jupiter.version>5.13.4</junit.jupiter.version>
     <jakarta.validation.version>3.1.1</jakarta.validation.version>
     <hibernate-validator.version>9.0.1.Final</hibernate-validator.version>
-    <avaje-inject.version>11.6</avaje-inject.version>
+    <avaje-inject.version>12.4</avaje-inject.version>
     <org-mapstruct.version>1.6.3</org-mapstruct.version>
-    <embedded-postgres.version>2.1.0</embedded-postgres.version>
+    <embedded-postgres.version>2.2.0</embedded-postgres.version>
     <logback.version>1.5.32</logback.version>
     <slf4j.version>2.0.17</slf4j.version>
 
