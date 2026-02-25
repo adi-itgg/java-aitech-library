@@ -40,12 +40,14 @@ public class PgRepositoryImpl extends PoolBase<PoolImpl> implements PgRepository
     this.pgRepositoryOptions = pgRepositoryOptions;
     this.daoManager = daoManager;
 
-    this.preparedQueryFilters = pgManager.getLoadedModules().stream()
-      .map(module -> module instanceof PreparedQueryFilter m ? m : null)
-      .filter(Objects::nonNull)
-      .toList();
-    if (this.preparedQueryFilters.isEmpty()) {
-      this.preparedQueryFilters = null;
+    if (pgManager.getLoadedModules() != null && !pgManager.getLoadedModules().isEmpty()) {
+      this.preparedQueryFilters = pgManager.getLoadedModules().stream()
+        .map(module -> module instanceof PreparedQueryFilter m ? m : null)
+        .filter(Objects::nonNull)
+        .toList();
+      if (this.preparedQueryFilters.isEmpty()) {
+        this.preparedQueryFilters = null;
+      }
     }
   }
 
