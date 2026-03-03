@@ -17,7 +17,7 @@ public class QueryParamsRequestReader implements RequestReader {
 
   @Override
   public boolean isSupported(RoutingContext context, Type type, ParamType paramType) {
-    return !context.request().params().isEmpty() && paramType == ParamType.QUERY;
+    return paramType == ParamType.QUERY;
   }
 
   @Override

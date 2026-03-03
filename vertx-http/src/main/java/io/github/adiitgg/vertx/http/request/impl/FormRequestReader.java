@@ -17,7 +17,7 @@ public class FormRequestReader implements RequestReader {
 
   @Override
   public boolean isSupported(RoutingContext context, Type type, ParamType paramType) {
-    return !context.request().formAttributes().isEmpty() && paramType == ParamType.FORM;
+    return paramType == ParamType.FORM;
   }
 
   @Override

@@ -15,7 +15,7 @@ public class PathParamRequestReader implements RequestReader {
 
   @Override
   public boolean isSupported(RoutingContext context, Type type, ParamType paramType) {
-    return !context.pathParams().isEmpty() && paramType == ParamType.PATH;
+    return paramType == ParamType.PATH;
   }
 
   @Override

@@ -17,7 +17,7 @@ public class HeadersRequestReader implements RequestReader {
 
   @Override
   public boolean isSupported(RoutingContext context, Type type, ParamType paramType) {
-    return !context.request().headers().isEmpty() && paramType == ParamType.HEADER;
+    return paramType == ParamType.HEADER;
   }
 
   @Override
