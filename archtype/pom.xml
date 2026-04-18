@@ -32,7 +32,7 @@
     <commons-collections4.version>4.5.0-M2</commons-collections4.version>
     <commons-codec.version>1.17.1</commons-codec.version>
     <jakarta.validation.version>3.1.0</jakarta.validation.version>
-    <bouncycastle.version>1.79</bouncycastle.version>
+    <bouncycastle.version>1.84</bouncycastle.version>
     <mockito.version>5.14.2</mockito.version>
     <embedded-postgres.version>2.1.0</embedded-postgres.version>
     <flyway.version>11.2.0</flyway.version>
